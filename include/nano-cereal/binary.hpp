@@ -30,13 +30,13 @@ class ArchiveBase {
   template <class T>
   typename std::enable_if<std::is_arithmetic<T>::value, void>::type archive(
       T &t) {
-    archive_binary(reinterpret_cast<char *>(std::addressof(t)), sizeof(t));
+    archive_binary(reinterpret_cast<uint8_t *>(std::addressof(t)), sizeof(t));
   }
 
   // enum
   template <class T>
   typename std::enable_if<std::is_enum<T>::value, void>::type archive(T &t) {
-    archive_binary(reinterpret_cast<char *>(std::addressof(t)), sizeof(t));
+    archive_binary(reinterpret_cast<uint8_t *>(std::addressof(t)), sizeof(t));
   }
 
   // class or struct
@@ -58,7 +58,7 @@ class BinaryOutputArchive : public ArchiveBase {
 
  private:
   void archive_binary(void *const data, size_t size) override {
-    stream.write(reinterpret_cast<const char *>(data), size);
+    stream.write(reinterpret_cast<const uint8_t *>(data), size);
   }
 
   ostream &stream;
@@ -70,7 +70,7 @@ class BinaryInputArchive : public ArchiveBase {
 
  private:
   void archive_binary(void *const data, size_t size) override {
-    stream.read(reinterpret_cast<char *>(data), size);
+    stream.read(reinterpret_cast<uint8_t *>(data), size);
   }
 
   istream &stream;

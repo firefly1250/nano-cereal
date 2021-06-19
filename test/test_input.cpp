@@ -3,7 +3,7 @@
 #include <iostream>
 
 struct MyRecord {
-  char x;
+  uint8_t x;
   int y[5];
   enum E { a, b, c, d, e, f } z;
 
@@ -37,7 +37,7 @@ int main() {
   }
 
   auto str = ss.str();
-  etl::deque<char, 100> buf;
+  etl::deque<uint8_t, 100> buf;
   std::copy(str.begin(), str.end(), std::back_inserter(buf));
 
   // input

@@ -4,13 +4,13 @@
 #include "etl/deque.h"
 
 namespace nanocereal {
-using streambuf = etl::ideque<char>;
+using streambuf = etl::ideque<uint8_t>;
 
 class istream {
  public:
   istream(streambuf *buf) : buf(buf) {}
 
-  void read(char *const data, size_t size) {
+  void read(uint8_t *const data, size_t size) {
     for (size_t i = 0; i < size; i++) data[i] = buf->at(i);
     buf->erase(buf->begin(), buf->begin() + size);
   }
@@ -23,7 +23,7 @@ class ostream {
  public:
   ostream(streambuf *buf) : buf(buf) {}
 
-  void write(const char *const data, size_t size) {
+  void write(const uint8_t *const data, size_t size) {
     for (size_t i = 0; i < size; i++) buf->push_back(data[i]);
   }
 

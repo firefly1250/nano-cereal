@@ -13,7 +13,7 @@ struct MyRecord {
 
 int main() {
   namespace cereal = nanocereal;
-  etl::deque<char, 100> ss;
+  etl::deque<uint8_t, 100> ss;
 
   // output
   {
