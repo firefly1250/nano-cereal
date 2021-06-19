@@ -1,4 +1,4 @@
-#include <cereal/binary.hpp>
+#include <nano-cereal/binary.hpp>
 #include <sstream>
 #include <iostream>
 
@@ -13,6 +13,7 @@ struct MyRecord {
 };
 
 int main() {
+  namespace cereal = nanocereal;
   std::stringstream ss;
 
   // output

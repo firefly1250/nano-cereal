@@ -4,7 +4,7 @@
 #include <istream>
 #include <ostream>
 
-namespace cereal {
+namespace nanocereal {
 class ArchiveBase {
  public:
   template <class... Types>
@@ -76,6 +76,6 @@ class BinaryInputArchive : public ArchiveBase {
 
   std::istream &stream;
 };
-}  // namespace cereal
+}  // namespace nanocereal
 
 #endif  // NANO_CEREAL_BINARY_HPP
