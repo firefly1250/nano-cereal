@@ -34,6 +34,12 @@ class ArchiveBase {
     archive_binary(std::addressof(t), sizeof(t));
   }
 
+  // enum
+  template <class T>
+  typename std::enable_if<std::is_enum<T>::value, void>::type archive(T &t) {
+    archive_binary(std::addressof(t), sizeof(t));
+  }
+
   // class or struct
   template <class T>
   typename std::enable_if<std::is_class<T>::value, void>::type archive(T &t) {
