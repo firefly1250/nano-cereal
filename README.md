@@ -11,7 +11,7 @@ To serialize class/struct, you must define member function named `serialize` lik
 
 ### usage
 ```cpp
-#include <cereal/binary.hpp>
+#include <nano-cereal/binary.hpp>
 #include <fstream>
 
 struct MyRecord {
