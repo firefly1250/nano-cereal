@@ -13,11 +13,11 @@ struct MyRecord {
 
 int main() {
   namespace cereal = nanocereal;
-  etl::deque<uint8_t, 100> ss;
+  etl::deque<uint8_t, 100> buf;
 
   // output
   {
-    cereal::ostream os(&ss);
+    cereal::ostream os(&buf);
     cereal::BinaryOutputArchive archive(os);
 
     int int_data = 5;
@@ -26,11 +26,9 @@ int main() {
     archive(int_data, struct_data, array_data);
   }
 
-  std::cout << "size: " << ss.size() << std::endl;
-
   // input
   {
-    cereal::istream is(&ss);
+    cereal::istream is(&buf);
     cereal::BinaryInputArchive archive(is);
 
     int int_data = 0;
