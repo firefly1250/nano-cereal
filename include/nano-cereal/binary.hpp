@@ -1,8 +1,7 @@
 #ifndef NANO_CEREAL_BINARY_HPP
 #define NANO_CEREAL_BINARY_HPP
 
-#include <istream>
-#include <ostream>
+#include "nano-cereal/stream.hpp"
 
 namespace nanocereal {
 class ArchiveBase {
@@ -13,7 +12,7 @@ class ArchiveBase {
   }
 
  protected:
-  virtual void archive_binary(void *const data, std::streamsize size) = 0;
+  virtual void archive_binary(void *const data, size_t size) = 0;
 
  private:
   template <class T, class... Other>
@@ -31,13 +30,13 @@ class ArchiveBase {
   template <class T>
   typename std::enable_if<std::is_arithmetic<T>::value, void>::type archive(
       T &t) {
-    archive_binary(std::addressof(t), sizeof(t));
+    archive_binary(reinterpret_cast<char *>(std::addressof(t)), sizeof(t));
   }
 
   // enum
   template <class T>
   typename std::enable_if<std::is_enum<T>::value, void>::type archive(T &t) {
-    archive_binary(std::addressof(t), sizeof(t));
+    archive_binary(reinterpret_cast<char *>(std::addressof(t)), sizeof(t));
   }
 
   // class or struct
@@ -55,26 +54,26 @@ class ArchiveBase {
 
 class BinaryOutputArchive : public ArchiveBase {
  public:
-  BinaryOutputArchive(std::ostream &stream) : stream(stream) {}
+  BinaryOutputArchive(ostream &stream) : stream(stream) {}
 
  private:
-  void archive_binary(void *const data, std::streamsize size) override {
+  void archive_binary(void *const data, size_t size) override {
     stream.write(reinterpret_cast<const char *>(data), size);
   }
 
-  std::ostream &stream;
+  ostream &stream;
 };
 
 class BinaryInputArchive : public ArchiveBase {
  public:
-  BinaryInputArchive(std::istream &stream) : stream(stream) {}
+  BinaryInputArchive(istream &stream) : stream(stream) {}
 
  private:
-  void archive_binary(void *const data, std::streamsize size) override {
+  void archive_binary(void *const data, size_t size) override {
     stream.read(reinterpret_cast<char *>(data), size);
   }
 
-  std::istream &stream;
+  istream &stream;
 };
 }  // namespace nanocereal
 

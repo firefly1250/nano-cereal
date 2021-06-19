@@ -1,5 +1,4 @@
 #include <nano-cereal/binary.hpp>
-#include <sstream>
 #include <iostream>
 
 struct MyRecord {
@@ -14,11 +13,12 @@ struct MyRecord {
 
 int main() {
   namespace cereal = nanocereal;
-  std::stringstream ss;
+  etl::deque<char, 100> ss;
 
   // output
   {
-    cereal::BinaryOutputArchive archive(ss);
+    cereal::ostream os(&ss);
+    cereal::BinaryOutputArchive archive(os);
 
     int int_data = 5;
     MyRecord struct_data{1, 2, -5.5};
@@ -26,9 +26,12 @@ int main() {
     archive(int_data, struct_data, array_data);
   }
 
+  std::cout << "size: " << ss.size() << std::endl;
+
   // input
   {
-    cereal::BinaryInputArchive archive(ss);
+    cereal::istream is(&ss);
+    cereal::BinaryInputArchive archive(is);
 
     int int_data = 0;
     MyRecord struct_data{0, 0, 0};

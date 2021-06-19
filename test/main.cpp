@@ -1,6 +1,5 @@
 #include <nano-cereal/binary.hpp>
 #include <cereal/archives/binary.hpp>
-#include <sstream>
 #include <iostream>
 
 struct MyRecord {
@@ -37,9 +36,14 @@ int main() {
     archive(output_data);
   }
 
+  auto str = ss.str();
+  etl::deque<char, 100> buf;
+  std::copy(str.begin(), str.end(), std::back_inserter(buf));
+
   // input
   {
-    nanocereal::BinaryInputArchive archive(ss);
+    nanocereal::istream is(&buf);
+    nanocereal::BinaryInputArchive archive(is);
     archive(input_data);
   }
 
