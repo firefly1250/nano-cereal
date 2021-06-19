@@ -12,11 +12,10 @@ To serialize class/struct, you must define member function named `serialize` lik
 ### usage
 ```cpp
 #include <cereal/binary.hpp>
-#include <sstream>
-#include <iostream>
+#include <fstream>
 
 struct MyRecord {
-  int x, y;
+  uint8_t  x, y;
   float z;
 
   template <class Archive>
@@ -26,41 +25,14 @@ struct MyRecord {
 };
 
 int main() {
-  std::stringstream ss;
+  namespace cereal = nanocereal;
+  std::ofstream os("out.cereal", std::ios::binary);
+  cereal::BinaryOutputArchive archive(os);
 
-  // output
-  {
-    cereal::BinaryOutputArchive archive(ss);
+  MyRecord data1;
+  int data2
+  archive(data1, data2);
 
-    int int_data = 5;
-    MyRecord struct_data{1, 2, -5.5};
-    double array_data[5]{1, 2, 3, 4, 5};
-    archive(int_data, struct_data, array_data);
-  }
-
-  // input
-  {
-    cereal::BinaryInputArchive archive(ss);
-
-    int int_data = 0;
-    MyRecord struct_data{0, 0, 0};
-    double array_data[5]{0};
-    archive(int_data, struct_data, array_data);
-
-    std::cout << "int_data: " << int_data << std::endl;
-    std::cout << "data: " << struct_data.x << ", " << struct_data.y << ", "
-              << struct_data.z << std::endl;
-    std::cout << "array: ";
-    for (const auto &e : array_data) std::cout << e << ",";
-    std::cout << std::endl;
-  }
   return 0;
 }
-```
-
-### result
-```
-int_data: 5
-data: 1, 2, -5.5
-array: 1,2,3,4,5,
 ```
